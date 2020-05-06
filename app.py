@@ -1,14 +1,24 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
+from flask_cors import CORS
+from flask_heroku import Heroku
+from environs import Env
 
 
 app = Flask(__name__)
 
+CORS(app)
+heroku = Heroku(app)
+
+env = Env()
+env.read_env()
+DATABASE_URL = env("CLEARDB_DATABASE_URL")
+
 # MySQL database configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'benjy2012!'
-app.config['MYSQL_DB'] = 'boxedin_ecommerce_db'
+app.config['MYSQL_HOST'] = 'us-cdbr-east-06.cleardb.net'
+app.config['MYSQL_USER'] = 'b2d18267c8be21'
+app.config['MYSQL_PASSWORD'] = '4f896c41'
+app.config['MYSQL_DB'] = 'heroku_6db9d1407cd6160'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)

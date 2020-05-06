@@ -8,6 +8,10 @@ verify_ssl = true
 [packages]
 flask = "*"
 flask-mysqldb = "*"
+flask-cors = "*"
+gunicorn = "*"
+flask-heroku = "*"
+environs = "*"
 
 [requires]
 python_version = "3.8"
