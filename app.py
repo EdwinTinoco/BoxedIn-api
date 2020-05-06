@@ -199,55 +199,41 @@ def add_user():
 def get_comments():    
    cur = mysql.connection.cursor()
    
-   cur.callproc("spGetAllUsers", ())
-   all_users = cur.fetchall()
+   cur.callproc("spGetAllComments", ())
+   all_comments = cur.fetchall()
 
    cur.close()
 
-   return jsonify(all_users)
+   return jsonify(all_comments)
 
 # GET ONE
-@app.route('/user/<id>', methods=['GET'])
-def get_user(id):
+@app.route('/comment/<id>', methods=['GET'])
+def get_comment(id):
    cur = mysql.connection.cursor()
   
-   cur.callproc("spGetUserById", [id])
-   user = cur.fetchall()
+   cur.callproc("spGetCommentById", [id])
+   comment = cur.fetchall()
 
    cur.close()
 
-   if user:
-      return jsonify(user)
+   if comment:
+      return jsonify(comment)
    else:
-      return jsonify("That user doesnt exist")  
+      return jsonify("That comment doesnt exist")  
 
-# PATCH
-@app.route('/user/<id>', methods=['PATCH'])
-def update_user(id):
-   users_email = request.json['users_email']
-   users_password = request.json['users_password']
-   users_role = request.json['users_role']
-
-   cur = mysql.connection.cursor()
-
-   cur.callproc("spUpdateUserById", [id, users_email, users_password, users_role])
-
-   mysql.connection.commit()
-   cur.close()
-
-   return jsonify('User updated successfully')
+# I DONT NEED PATCH
 
 # DELETE
-@app.route('/delete-user/<id>', methods=['DELETE'])
-def delete_user(id):
+@app.route('/delete-comment/<id>', methods=['DELETE'])
+def delete_comment(id):
    cur = mysql.connection.cursor()
    
-   cur.callproc("spDeleteUserById", [id])
+   cur.callproc("spDeleteCommentById", [id])
    mysql.connection.commit()
 
    cur.close()    
 
-   return jsonify('User deleted')
+   return jsonify('Comment deleted')
 
 
 
