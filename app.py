@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -185,14 +186,17 @@ def delete_user(id):
 # POST
 @app.route('/add-comment', methods=['POST'])
 def add_comment():   
+      now = datetime.now()
+      date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
       comments_comment = request.json['comments_comment']
+      comments_date = date_time
       comments_products_id = request.json['comments_products_id']
       comments_users_id = request.json['comments_users_id']      
 
       cur = mysql.connection.cursor()
       
       cur.callproc("spInsertNewComment",
-      [comments_comment, comments_products_id, comments_users_id])
+      [comments_comment, comments_date, comments_products_id, comments_users_id])
 
       mysql.connection.commit()
       cur.close()
