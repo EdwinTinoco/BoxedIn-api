@@ -1,25 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
-# from flask_cors import CORS
-# from flask_heroku import Heroku
-# from environs import Env
 
 
 app = Flask(__name__)
 
-# CORS(app)
-# heroku = Heroku(app)
-
-# env = Env()
-# env.read_env()
-# DATABASE_URL = env("CLEARDB_DATABASE_URL")
-
-# MySQL database configuration
 app.config['MYSQL_HOST'] = 'us-cdbr-east-06.cleardb.net'
 app.config['MYSQL_USER'] = 'b2d18267c8be21'
 app.config['MYSQL_PASSWORD'] = '4f896c41'
 app.config['MYSQL_DB'] = 'heroku_6db9d1407cd6160'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+
 
 mysql = MySQL(app)
 
@@ -87,11 +78,11 @@ def get_product(id):
 @app.route('/product/<id>', methods=['PATCH'])
 def update_product(id):
    products_inventory = request.json['products_inventory']
-   products_stars_id = request.json['products_stars_id']
+   products_stars = request.json['products_stars']
 
    cur = mysql.connection.cursor()
 
-   cur.callproc("spUpdateProductById", [id, products_inventory, products_stars_id])
+   cur.callproc("spUpdateProductById", [id, products_inventory, products_stars])
 
    mysql.connection.commit()
    cur.close()
