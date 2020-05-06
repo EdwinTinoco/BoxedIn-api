@@ -179,7 +179,7 @@ def delete_user(id):
 # Endpoints for Comments Table-------------------------------------------------------------------------------------
 # POST
 @app.route('/add-comment', methods=['POST'])
-def add_user():   
+def add_comment():   
       comments_comment = request.json['comments_comment']
       comments_products_id = request.json['comments_products_id']
       comments_users_id = request.json['comments_users_id']      
@@ -234,6 +234,67 @@ def delete_comment(id):
    cur.close()    
 
    return jsonify('Comment deleted')
+
+
+# Endpoints for Sales Table-------------------------------------------------------------------------------------
+# POST
+@app.route('/add-sale', methods=['POST'])
+def add_sale():   
+      sales_products_id = request.json['sales_products_id']
+      sales_users_id = request.json['sales_users_id']     
+      sales_tax = request.json['sales_tax']     
+      sales_total = request.json['sales_total']     
+
+      cur = mysql.connection.cursor()
+      
+      cur.callproc("spInsertNewSale",
+      [sales_products_id, sales_users_id, sales_tax, sales_total])
+
+      mysql.connection.commit()
+      cur.close()
+
+      return jsonify('Sale inserted successfully')
+
+# GET ALL
+@app.route('/sales', methods=["GET"])
+def get_sales():    
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spGetAllSales", ())
+   all_sales = cur.fetchall()
+
+   cur.close()
+
+   return jsonify(all_sales)
+
+# GET ONE
+@app.route('/sale/<id>', methods=['GET'])
+def get_sale(id):
+   cur = mysql.connection.cursor()
+  
+   cur.callproc("spGetSaleById", [id])
+   sale = cur.fetchall()
+
+   cur.close()
+
+   if sale:
+      return jsonify(sale)
+   else:
+      return jsonify("That sale doesnt exist")  
+
+# I DONT NEED PATCH
+
+# DELETE
+@app.route('/delete-sale/<id>', methods=['DELETE'])
+def delete_sale(id):
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spDeleteSaleById", [id])
+   mysql.connection.commit()
+
+   cur.close()    
+
+   return jsonify('Sale deleted')
 
 
 
