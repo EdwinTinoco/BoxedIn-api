@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
-from datetime import datetime
 
 
 app = Flask(__name__)
@@ -249,13 +248,14 @@ def delete_comment(id):
 def add_sale():   
       sales_products_id = request.json['sales_products_id']
       sales_users_id = request.json['sales_users_id']     
+      sales_date = request.json['sales_date']     
       sales_tax = request.json['sales_tax']     
       sales_total = request.json['sales_total']     
 
       cur = mysql.connection.cursor()
       
       cur.callproc("spInsertNewSale",
-      [sales_products_id, sales_users_id, sales_tax, sales_total])
+      [sales_products_id, sales_users_id, sales_date, sales_tax, sales_total])
 
       mysql.connection.commit()
       cur.close()
