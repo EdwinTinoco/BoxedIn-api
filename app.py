@@ -185,9 +185,7 @@ def delete_user(id):
 # Endpoints for Comments Table-------------------------------------------------------------------------------------
 # POST
 @app.route('/add-comment', methods=['POST'])
-def add_comment():   
-      now = datetime.now()
-      date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+def add_comment():        
       comments_comment = request.json['comments_comment']
       comments_date = request.json['comments_date']
       comments_products_id = request.json['comments_products_id']
