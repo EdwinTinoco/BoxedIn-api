@@ -233,6 +233,21 @@ def get_comment(id):
    else:
       return jsonify("That comment doesnt exist")  
 
+# GET COMMENTS BY PRODUCT_ID
+@app.route('/comments-by-product/<id>', methods=['GET'])
+def get_commentsByProduct(id):
+   cur = mysql.connection.cursor()
+  
+   cur.callproc("spGetCommentsByProduc", [id])
+   comments = cur.fetchall()
+
+   cur.close()
+
+   if comments:
+      return jsonify(comments)
+   else:
+      return jsonify("That comment doesnt exist")  
+
 # I DONT NEED PATCH
 
 # DELETE
