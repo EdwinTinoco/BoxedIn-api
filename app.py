@@ -33,6 +33,7 @@ def add_product():
       products_image_url = request.json['products_image_url']
       products_categories = request.json['products_categories']
       products_stars = request.json['products_stars']
+      products_price = request.json['products_price']
 
       cur = mysql.connection.cursor()
 
@@ -42,7 +43,7 @@ def add_product():
       # (products_name, products_description, products_inventory, products_image_url, products_categories_id, products_stars_id))
 
       cur.callproc("spInsertaNewProduct",
-      [products_name, products_description, products_inventory, products_image_url, products_categories, products_stars])
+      [products_name, products_description, products_inventory, products_image_url, products_categories, products_stars, products_price])
 
       mysql.connection.commit()
       cur.close()
@@ -83,10 +84,11 @@ def get_product(id):
 def update_product(id):
    products_inventory = request.json['products_inventory']
    products_stars = request.json['products_stars']
+   products_price = request.json['products_price']
 
    cur = mysql.connection.cursor()
 
-   cur.callproc("spUpdateProductById", [id, products_inventory, products_stars])
+   cur.callproc("spUpdateProductById", [id, products_inventory, products_stars, products_price])
 
    mysql.connection.commit()
    cur.close()
