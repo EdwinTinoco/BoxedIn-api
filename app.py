@@ -201,10 +201,11 @@ def add_comment():
       cur.callproc("spInsertNewComment",
       [comments_comment, comments_date, comments_products_id, comments_users_id])
 
+      new_comment = cur.fetchone()
       mysql.connection.commit()
       cur.close()
 
-      return jsonify('Comment inserted successfully')
+      return jsonify(new_comment)
 
 # GET ALL
 @app.route('/comments', methods=["GET"])
