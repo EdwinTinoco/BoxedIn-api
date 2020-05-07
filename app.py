@@ -204,15 +204,7 @@ def add_comment():
       mysql.connection.commit()
       cur.close()
 
-
-      cur = mysql.connection.cursor()      
-      cur.callproc("spGetTopCommentByProductByUser",
-      [comments_products_id, comments_users_id])
-      new_comment = cur.fetchall()
-      mysql.connection.commit()
-      cur.close()     
-
-      return jsonify(new_comment)
+      return jsonify("Comment inserted succesfully")
 
 # GET ALL
 @app.route('/comments', methods=["GET"])
