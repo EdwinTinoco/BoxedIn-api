@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
+from flask_cors import CORS
+from flask_heroku import Heroku
 
 
 app = Flask(__name__)
+CORS(app)
+heroku = Heroku(app)
 
 app.config['MYSQL_HOST'] = 'us-cdbr-east-06.cleardb.net'
 app.config['MYSQL_USER'] = 'b2d18267c8be21'
