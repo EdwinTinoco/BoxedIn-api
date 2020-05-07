@@ -201,7 +201,7 @@ def add_comment():
       cur.callproc("spInsertNewComment",
       [comments_comment, comments_date, comments_products_id, comments_users_id])
 
-      new_comment = cur.fetchone()
+      new_comment = cur.fetchall()
       mysql.connection.commit()
       cur.close()
 
