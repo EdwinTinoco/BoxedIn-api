@@ -242,11 +242,8 @@ def get_commentsByProduct(id):
    comments = cur.fetchall()
 
    cur.close()
-
-   if comments:
-      return jsonify(comments)
-   else:
-      return jsonify("That comment doesnt exist")  
+   
+   return jsonify(comments)  
 
 # I DONT NEED PATCH
 
