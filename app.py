@@ -268,7 +268,7 @@ def delete_comment(id):
 
 # Endpoints for Cart Table-------------------------------------------------------------------------------------
 # POST
-@app.route('/add-item-art', methods=['POST'])
+@app.route('/add-item-cart', methods=['POST'])
 def add_item_cart():   
       cart_products_id = request.json['cart_products_id']
       cart_products_name = request.json['cart_products_name']
@@ -287,6 +287,68 @@ def add_item_cart():
       cur.close()
 
       return jsonify('Item inserted to the Cart successfully')
+
+#GET ALL
+@app.route('/carts', methods=["GET"])
+def get_carts():    
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spGetAllCarts", ())
+   all_carts = cur.fetchall()
+
+   cur.close()
+
+   return jsonify(all_carts)
+
+#GET ALL ITMES BY USER_ID
+@app.route('/carts-items-by-user/<id>', methods=["GET"])
+def get_carts_items_by_user(id):    
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spGetItemCartsByUser", ())
+   all_carts = cur.fetchall()
+
+   cur.close()
+
+   return jsonify(all_carts)
+
+# PATCH
+@app.route('/cart/<id>', methods=['PATCH'])
+def update_item_cart(id):
+   cart_quantity_items = request.json['cart_quantity_items']
+
+   cur = mysql.connection.cursor()
+
+   cur.callproc("spUpdateItemCartById", [id, cart_quantity_items])
+
+   mysql.connection.commit()
+   cur.close()
+
+   return jsonify('Item Cart updated successfully')
+
+# DELETE
+@app.route('/delete-item-cart/<id>', methods=['DELETE'])
+def delete_item_cart(id):
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spDeleteItemCartById", [id])
+   mysql.connection.commit()
+
+   cur.close()    
+
+   return jsonify('Item Cart deleted')
+
+# DELETE ITEMS BY USER_ID
+@app.route('/delete-item-cart-by-user/<id>', methods=['DELETE'])
+def delete_item_cart_by_user(id):
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spDeleteItemCartByUser", [id])
+   mysql.connection.commit()
+
+   cur.close()    
+
+   return jsonify('Item Cart deleted by User')
 
 
 # Endpoints for Sales Table-------------------------------------------------------------------------------------
