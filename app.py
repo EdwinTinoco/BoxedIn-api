@@ -37,11 +37,6 @@ def add_product():
 
       cur = mysql.connection.cursor()
 
-      # cur.execute("""INSERT INTO products
-      # (products_name, products_description, products_inventory, products_image_url, products_categories_id, products_stars_id) 
-      # VALUES (%s, %s, %s, %s, %s, %s)""", 
-      # (products_name, products_description, products_inventory, products_image_url, products_categories_id, products_stars_id))
-
       cur.callproc("spInsertaNewProduct",
       [products_name, products_description, products_inventory, products_image_url, products_categories, products_stars, products_price])
 
@@ -55,7 +50,6 @@ def add_product():
 def get_products():    
    cur = mysql.connection.cursor()
 
-   #cur.execute("""SELECT * FROM products""")
    cur.callproc("spGetAllProducts", ())
    all_products = cur.fetchall()
 
@@ -68,7 +62,6 @@ def get_products():
 def get_product(id):
    cur = mysql.connection.cursor()
 
-   #cur.execute("""SELECT * FROM products WHERE products_id = %s""", (id))
    cur.callproc("spGetProdById", [id])
    product = cur.fetchall()
 
@@ -100,7 +93,6 @@ def update_product(id):
 def delete_product(id):
    cur = mysql.connection.cursor()
 
-   #cur.execute(""" DELETE FROM products WHERE products_id = %s""", (id))
    cur.callproc("spDeleteProductById", [id])
    mysql.connection.commit()
 
@@ -131,20 +123,20 @@ def add_user():
 
       return jsonify('User inserted successfully')
 
-@app.route('/user-credentials', methods=['GET'])
-def get_user_credentials(users_email, users_password):   
-   # users_email = request.json['users_email']
-   # users_password = request.json['users_password']
+# @app.route('/user-credentials', methods=['GET'])
+# def get_user_credentials():   
+#    users_email = request.json['users_email']
+#    users_password = request.json['users_password']
 
-   cur = mysql.connection.cursor()
+#    cur = mysql.connection.cursor()
 
-   cur.callproc("spGetUserCredentials", [users_email, users_password])
-   user = cur.fetchall()
+#    cur.callproc("spGetUserCredentials", [users_email, users_password])
+#    user = cur.fetchall()
 
-   mysql.connection.commit()
-   cur.close()
+#    mysql.connection.commit()
+#    cur.close()
 
-   return jsonify(user)
+#    return jsonify(user)
 
 # GET ALL
 @app.route('/users', methods=["GET"])
@@ -273,6 +265,28 @@ def delete_comment(id):
    cur.close()    
 
    return jsonify('Comment deleted')
+
+# Endpoints for Cart Table-------------------------------------------------------------------------------------
+# POST
+@app.route('/add-item-art', methods=['POST'])
+def add_user():   
+      cart_products_id = request.json['cart_products_id']
+      cart_products_name = request.json['cart_products_name']
+      cart_users_id = request.json['cart_users_id']
+      cart_users_first_name = request.json['cart_users_first_name']
+      cart_date = request.json['cart_date']
+      cart_quantity_items = request.json['cart_quantity_items']
+      cart_products_price = request.json['cart_products_price']
+
+      cur = mysql.connection.cursor()
+      
+      cur.callproc("spInsertItemsCart",
+      [cart_products_id, cart_products_name, cart_users_id, cart_users_first_name, cart_date, cart_quantity_items, cart_products_price])
+
+      mysql.connection.commit()
+      cur.close()
+
+      return jsonify('Item inserted to the Cart successfully')
 
 
 # Endpoints for Sales Table-------------------------------------------------------------------------------------
