@@ -305,7 +305,7 @@ def get_carts():
 def get_carts_items_by_user(id):    
    cur = mysql.connection.cursor()
    
-   cur.callproc("spGetItemCartsByUser", ())
+   cur.callproc("spGetItemCartsByUser", [id])
    all_carts = cur.fetchall()
 
    cur.close()
