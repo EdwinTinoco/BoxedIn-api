@@ -131,6 +131,21 @@ def add_user():
 
       return jsonify('User inserted successfully')
 
+@app.route('/user-credentials', methods=['GET'])
+def get_user_credentials():   
+   users_email = request.json['users_email']
+   users_password = request.json['users_password']
+
+   cur = mysql.connection.cursor()
+
+   cur.callproc("spGetUserCredentials", [users_email, users_password])
+   user = cur.fetchall()
+
+   mysql.connection.commit()
+   cur.close()
+
+   return jsonify(user)
+
 # GET ALL
 @app.route('/users', methods=["GET"])
 def get_users():    
