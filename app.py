@@ -272,6 +272,7 @@ def delete_comment(id):
 def add_item_cart():   
       cart_products_id = request.json['cart_products_id']
       cart_products_name = request.json['cart_products_name']
+      cart_products_image_url = request.json['cart_products_image_url']
       cart_users_id = request.json['cart_users_id']
       cart_users_first_name = request.json['cart_users_first_name']
       cart_date = request.json['cart_date']
@@ -281,7 +282,7 @@ def add_item_cart():
       cur = mysql.connection.cursor()
       
       cur.callproc("spInsertItemsCart",
-      [cart_products_id, cart_products_name, cart_users_id, cart_users_first_name, cart_date, cart_quantity_items, cart_products_price])
+      [cart_products_id, cart_products_name, cart_products_image_url, cart_users_id, cart_users_first_name, cart_date, cart_quantity_items, cart_products_price])
 
       mysql.connection.commit()
       cur.close()
