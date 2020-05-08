@@ -269,7 +269,7 @@ def delete_comment(id):
 # Endpoints for Cart Table-------------------------------------------------------------------------------------
 # POST
 @app.route('/add-item-art', methods=['POST'])
-def add_user():   
+def add_item_cart():   
       cart_products_id = request.json['cart_products_id']
       cart_products_name = request.json['cart_products_name']
       cart_users_id = request.json['cart_users_id']
