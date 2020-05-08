@@ -131,7 +131,7 @@ def add_user():
 
       return jsonify('User inserted successfully')
 
-@app.route('/user-credentials', methods=['POST'])
+@app.route('/user-credentials', methods=['GET'])
 def get_user_credentials():   
    users_email = request.json['users_email']
    users_password = request.json['users_password']
