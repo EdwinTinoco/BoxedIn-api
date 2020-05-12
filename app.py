@@ -15,7 +15,6 @@ app.config['MYSQL_DB'] = 'heroku_6db9d1407cd6160'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
-
 mysql = MySQL(app)
 
 @app.route('/', methods=["GET"])
@@ -72,21 +71,39 @@ def get_product(id):
    else:
       return jsonify("That product doesnt exist")  
 
-# PATCH
-@app.route('/product/<id>', methods=['PATCH'])
+# PUT
+@app.route('/product/<id>', methods=['PUT'])
 def update_product(id):
+   products_name = request.json['products_name']
+   products_description = request.json['products_description']
    products_inventory = request.json['products_inventory']
+   products_image_url = request.json['products_image_url']
+   products_categories = request.json['products_categories']
    products_stars = request.json['products_stars']
-   products_price = request.json['products_price']
+   products_price = request.json['products_price']  
 
    cur = mysql.connection.cursor()
 
-   cur.callproc("spUpdateProductById", [id, products_inventory, products_stars, products_price])
+   cur.callproc("spUpdateProductById", [id, products_name, products_description, products_inventory, products_image_url, products_categories, products_stars, products_price])
 
    mysql.connection.commit()
    cur.close()
 
    return jsonify('Product updated successfully')
+
+# PATCH
+@app.route('/product/<id>', methods=['PATCH'])
+def update_product_star(id):
+   products_stars = request.json['products_stars']
+
+   cur = mysql.connection.cursor()
+
+   cur.callproc("spUpdateProductStarsById", [id, products_stars])
+
+   mysql.connection.commit()
+   cur.close()
+
+   return jsonify('Product Star updated successfully')
 
 # DELETE
 @app.route('/delete-product/<id>', methods=['DELETE'])
