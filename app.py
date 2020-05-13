@@ -140,21 +140,6 @@ def add_user():
 
       return jsonify('User inserted successfully')
 
-# @app.route('/user-credentials', methods=['GET'])
-# def get_user_credentials():   
-#    users_email = request.json['users_email']
-#    users_password = request.json['users_password']
-
-#    cur = mysql.connection.cursor()
-
-#    cur.callproc("spGetUserCredentials", [users_email, users_password])
-#    user = cur.fetchall()
-
-#    mysql.connection.commit()
-#    cur.close()
-
-#    return jsonify(user)
-
 # GET ALL
 @app.route('/users', methods=["GET"])
 def get_users():    
@@ -367,6 +352,54 @@ def delete_item_cart_by_user(id):
    cur.close()    
 
    return jsonify('Item Cart deleted by User')
+
+
+# Endpoints for Cart_GUEST Table-------------------------------------------------------------------------------------
+# POST
+@app.route('/add-item-cart-guest', methods=['POST'])
+def add_item_cart_guest():   
+      cart_guest_products_id = request.json['cart_guest_products_id']
+      cart_guest_products_name = request.json['cart_guest_products_name']
+      cart_guest_products_image_url = request.json['cart_guest_products_image_url']
+      cart_guest_users_id = request.json['cart_guest_users_id']
+      cart_guest_users_first_name = request.json['cart_guest_users_first_name']
+      cart_guest_date = request.json['cart_guest_date']
+      cart_guest_quantity_items = request.json['cart_guest_quantity_items']
+      cart_guest_products_price = request.json['cart_guest_products_price']
+
+      cur = mysql.connection.cursor()
+      
+      cur.callproc("spInsertItemsCartGuest",
+      [cart_guest_products_id, cart_guest_products_name, cart_guest_products_image_url, cart_guest_users_id, cart_guest_users_first_name, cart_guest_date, cart_guest_quantity_items, cart_guest_products_price])
+
+      mysql.connection.commit()
+      cur.close()
+
+      return jsonify('Item inserted to the Cart Guest successfully')
+
+#GET ALL
+@app.route('/carts-guest', methods=["GET"])
+def get_carts_guest():    
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spGetAllCartsGuest", ())
+   all_carts_guest = cur.fetchall()
+
+   cur.close()
+
+   return jsonify(all_carts_guest)
+
+# DELETE
+@app.route('/delete-item-cart-guest', methods=['DELETE'])
+def delete_item_cart_guest():
+   cur = mysql.connection.cursor()
+   
+   cur.callproc("spDeleteItemCartGuest")
+   mysql.connection.commit()
+
+   cur.close()    
+
+   return jsonify('Item Cart Guest deleted')
 
 
 # Endpoints for Sales Table-------------------------------------------------------------------------------------
