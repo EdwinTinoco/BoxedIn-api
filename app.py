@@ -133,12 +133,16 @@ def add_user():
       cur = mysql.connection.cursor()
       
       cur.callproc("spInsertNewUser",
-      [users_first_name, users_last_name, users_email, users_address, users_zip_code, users_password, users_role])
+      [users_first_name, users_last_name, users_email, users_address, users_zip_code, users_password, users_role])     
 
       mysql.connection.commit()
+
+      cur.callproc("spGetLastUserInserted", ())    
+      user = cur.fetchall()
+
       cur.close()
 
-      return jsonify('User inserted successfully')
+      return jsonify(user)
 
 # GET ALL
 @app.route('/users', methods=["GET"])
